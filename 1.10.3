@@ -1,0 +1,56 @@
+class Client:
+    def __init__(self, name,  balance):
+        self.name = name
+        self.balance = balance
+
+    def user_info(self):
+        return 'Клиент "' + self.name + '". Баланс: ' + self.balance + " руб."
+
+class UserData:
+    def __init__(self):
+        self.ver_clients = []
+
+    def balance_check(self, balance):
+        try:
+            balance = int(balance)
+        except ValueError:
+            print("Баланс должен быть числом!")
+            Console.make_a_pick()
+        if balance >= 0:
+            return balance
+        else:
+            print("Баланс должен быть числом, не меньшим нуля!")
+            Console.make_a_pick()
+
+    def add_client(self, name, balance):
+        UserData.balance_check(self, balance)
+        client = Client(name, balance)
+        return self.ver_clients.append(client)
+
+    def find_client(self, name):
+        info_client = []
+        for client in self.ver_clients:
+            if client.name == name:
+                info_client.append(client.user_info())
+                return client.user_info()
+        else:
+            print("Пользователь не найден!")
+            Console.make_a_pick()
+
+clients_database = UserData()
+
+class Console:
+    def make_a_pick():
+        pick = int(input("Введите 1, если хотите добавить клиента в базу, Введите 2, если хотите вывести информацию о клиенте: "))
+        if pick == 1:
+            clients_database.add_client(input("Введите имя: "), input("Введите баланс: "))
+            Console.make_a_pick()
+        elif pick == 2:
+            print(clients_database.find_client(input("Введите имя верифицированного пользователя: ")))
+            Console.make_a_pick()
+        else:
+            print("Неверный ввод!")
+            Console.make_a_pick()
+
+Console.make_a_pick()
+
